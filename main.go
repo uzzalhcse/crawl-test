@@ -12,7 +12,11 @@ const (
 )
 
 func main() {
-	crawler := ninjacrawler.NewCrawler(name, url)
+	crawler := ninjacrawler.NewCrawler(name, url, ninjacrawler.Engine{
+		BoostCrawling:  true,
+		BlockResources: true,
+		BlockedURLs:    []string{"syncsearch.jp"},
+	})
 	crawler.Start()
 	defer crawler.Stop()
 	config.Register(crawler)
