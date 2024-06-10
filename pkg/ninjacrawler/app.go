@@ -37,9 +37,9 @@ func NewCrawler(name, url string, engines ...Engine) *Crawler {
 		// Create default engine configuration
 		defaultEngine := Engine{
 			BrowserType:     "chromium",
-			ConcurrentLimit: 10,
+			ConcurrentLimit: 1,
 			IsDynamic:       false,
-			DevCrawlLimit:   10,
+			DevCrawlLimit:   50,
 			BlockResources:  false,
 			BlockedURLs: []string{
 				"www.googletagmanager.com",

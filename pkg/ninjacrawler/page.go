@@ -26,6 +26,10 @@ func handleProductDetail(document *goquery.Document, urlCollection UrlCollection
 		switch v := fieldValue.Interface().(type) {
 		case string:
 			// String value, do nothing
+		case func(*goquery.Document, UrlCollection) []AttributeItem:
+			// Call the function and set the result to the corresponding field in ProductDetail
+			result := fieldValue.Interface().(func(*goquery.Document, UrlCollection) []AttributeItem)(document, urlCollection)
+			reflect.ValueOf(productDetail).Elem().FieldByName(fieldName).Set(reflect.ValueOf(result))
 		case func(*goquery.Document, UrlCollection) []string:
 			// Call the function and set the result to the corresponding field in ProductDetail
 			result := fieldValue.Interface().(func(*goquery.Document, UrlCollection) []string)(document, urlCollection)
@@ -52,7 +56,7 @@ func handleProductDetail(document *goquery.Document, urlCollection UrlCollection
 
 			reflect.ValueOf(productDetail).Elem().FieldByName(fieldName).Set(reflect.ValueOf(stringSlice))
 		default:
-			app.Logger.Fatal("Unsupported %s Handler/Selector: %T", fieldName, v)
+			app.Logger.Error("Invalid %s Handler/Selector/Value: %T", fieldName, v)
 		}
 	}
 

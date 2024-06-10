@@ -48,7 +48,7 @@ func processSelection(selection *goquery.Selection, selector UrlSelector, collec
 		if !ok {
 			app.Logger.Error("Attribute not found. %v", selector.Attr)
 		} else {
-			fullUrl := getFullUrl(attrValue)
+			fullUrl := GetFullUrl(attrValue)
 			if selector.Handler != nil {
 				url, meta := selector.Handler(collection, fullUrl, s)
 				if url != "" {
@@ -87,7 +87,7 @@ func getItemsFromAttrOrText(selection *goquery.Selection, selector *CategorySele
 	return items
 }
 
-func getPageDom(page playwright.Page) (*goquery.Document, error) {
+func GetPageDom(page playwright.Page) (*goquery.Document, error) {
 	html, err := page.Content()
 	if err != nil {
 		return nil, err
@@ -98,10 +98,10 @@ func getPageDom(page playwright.Page) (*goquery.Document, error) {
 	}
 	return document, nil
 }
-func writePageContentToFile(page playwright.Page) error {
+func writePageContentToFile(page playwright.Page, msg string) error {
 	content, err := page.Content()
 	if err != nil {
-		return err
+		content = "No Page Content Found \n" + strings.TrimSpace(msg)
 	}
 	content = fmt.Sprintf("<!-- Time: %v \n Page Url: %s -->\n%s", time.Now(), page.URL(), content)
 	filename := generateFilename(page.URL())
@@ -139,7 +139,7 @@ func generateFilename(rawURL string) string {
 	return currentDate + "_" + rawURL + ".html"
 }
 
-func getFullUrl(url string) string {
+func GetFullUrl(url string) string {
 	fullUrl := ""
 	if strings.HasPrefix(url, "http://") || strings.HasPrefix(url, "https://") {
 		// If href is already a full URL, don't concatenate with baseUrl

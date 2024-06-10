@@ -6,6 +6,12 @@ import (
 	"github.com/uzzalhcse/crawl-test/pkg/ninjacrawler"
 )
 
+// const (
+//
+//	name = "markt"
+//	url  = "https://markt-mall.jp"
+//
+// )
 const (
 	name = "kyocera"
 	url  = "https://www.kyocera.co.jp/prdct/tool/category/product"
@@ -13,8 +19,9 @@ const (
 
 func main() {
 	crawler := ninjacrawler.NewCrawler(name, url, ninjacrawler.Engine{
-		BoostCrawling:  true,
+		//BoostCrawling:  true,
 		BlockResources: true,
+		DevCrawlLimit:  2,
 		BlockedURLs:    []string{"syncsearch.jp"},
 	})
 	crawler.Start()

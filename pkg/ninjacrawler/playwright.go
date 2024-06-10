@@ -99,5 +99,5 @@ func NavigateToURL(page playwright.Page, url string) (*goquery.Document, error) 
 		app.Logger.Html(page, err.Error())
 		return nil, err
 	}
-	return getPageDom(page)
+	return GetPageDom(page)
 }
